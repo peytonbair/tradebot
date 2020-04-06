@@ -3,6 +3,8 @@ import pandas as pd
 import requests
 import json
 import numpy as np
+from time import sleep
+from datetime import datetime
 from shutil import copyfile
 import plotly.graph_objs as go
 from plotly.offline import plot
@@ -14,65 +16,52 @@ from pyti.relative_strength_index import relative_strength_index as rsi
 from pyti.on_balance_volume import on_balance_volume as obv
 
 class TradingModel:
-    def __init__(self, ticker):
-        self.ticker = ticker
+    def __init__(self):
+
         self.df = self.getData()
 
 
     def getData(self):
         #get url to data from kraken api
-        ticker = self.ticker
-        base = 'https://api.kraken.com'
-        endpoint = '/0/public/OHLC'
-        params = '?pair=' + ticker + '&interval=15'
-        url = base + endpoint + params
-        #download the data
-        json_string = requests.get(url)
-        dictionary = json.loads(json_string.text)
-        dict_len = len(dictionary['result'][ticker])
-        self.dflength = dict_len
+        data = pd.read_csv("Kraken_BTCUSD_1h.csv")
+
         #creat pandas df
-        col_names = ['time', 'open', 'high', 'low', 'close', 'volume', 'sma20', 'sma40', 'rsi', 'obv']
-        df = pd.DataFrame(columns = col_names)
-
-        #creat df cause the import stuff would work
-        for x in range(dict_len):
-            temp = dictionary['result'][ticker][x]
-            df = df.append({col_names[0]: temp[0], col_names[1]: temp[1], col_names[2]: temp[2], col_names[3]: temp[3], col_names[4]: temp[4], col_names[5]: temp[5]}, ignore_index=True)
-
-        #turn df into floats
+        col_names = ['time','symbol','open','high','low','close','volume','volume usd', 'sma20', 'sma40', 'rsi', 'obv']
+        df = pd.DataFrame(data, columns = col_names)
+        print df        #turn df into floats
         for col in col_names:
             df[col] = df[col].astype(float)
         #add techinical indicatiors to the df
+        #df['time'] = [datetime.fromtimestamp(x) for x in df['time']]
         df['sma20'] = sma(df['close'].tolist(), 20)
         df['sma40'] = sma(df['close'].tolist(), 40)
         df['rsi'] = rsi(df['close'].tolist(), 14)
         df['obv'] = obv(df['close'].tolist(), df['volume'].tolist())
 
         return df
+
     def strategy(self):
         df = self.df
-        ticker = self.ticker
-        dflength = self.dflength
+
 
         buy_signals = []
         sell_signals = []
         pre_act = 'sell'
 
-        obv_average = df['obv'].sum()/dflength
+        #obv_average = df['obv'].sum()/dflength
         std_obv = np.std(df['obv'])
-        print obv_average
+        #print obv_average
         print std_obv
 
 
         #check for buy points
         for i in range(1, len(df['close'])):
-            if df['sma40'][i] > df['low'][i] and (df['sma40'][i] - df['low'][i]) > 0.02 * df['low'][i] and df['obv'][i] < -100000:
+            if df['obv'][i] < 0 and df['low'][i] > df['sma20'][i]:
                 buy_signals.append([df['time'][i], df['low'][i]])
                 pre_act = 'buy'
 
         #check for sell points
-            if df['obv'][i] >= 100000 and df['rsi'][i] >= 65 and pre_act == 'buy':
+            if df['obv'][i] >= 0 + std_obv and df['rsi'][i] > 65:
                 sell_signals.append([df['time'][i], df['high'][i]])
                 pre_act = 'sell'
 
@@ -80,7 +69,6 @@ class TradingModel:
 
 
     def plotData(self, buy_signals = False, sell_signals = False):
-        ticker = self.ticker
         df = self.df
         # plot candlestick chart
         candle = go.Candlestick(
@@ -145,16 +133,15 @@ class TradingModel:
         fig.append_trace(obv, row=3, col=1)
 
         #adjust layout
-        fig.update_layout(title_text="Crypto Data of " + ticker, xaxis_rangeslider_visible=False)
+        fig.update_layout(title_text="Backtest of BTC", xaxis_rangeslider_visible=False)
         #save plot to html file for later use
-        plot(fig, filename='chart.html')
+        plot(fig, filename= 'backtest.html')
 
         #copyfile('chart.html', '/var/www/html/')
-
 def Main():
-	symbol = "XXBTZUSD"
-	model = TradingModel(symbol)
+	symbol = "XETHZUSD"
+	model = TradingModel()
 	model.strategy()
 
 if __name__ == '__main__':
-	Main()
+    Main()

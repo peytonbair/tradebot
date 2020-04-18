@@ -1,0 +1,46 @@
+{
+    "transaction": [
+        {
+            "action": "Sell", 
+            "balance": 0, 
+            "name": "XETHZUSD", 
+            "price": 171.27, 
+            "time": "2020-04-17 17:11:00"
+        }, 
+        {
+            "action": "Sell", 
+            "balance": 0, 
+            "name": "XETHZUSD", 
+            "price": 171.41, 
+            "time": "2020-04-17 13:50:00"
+        }, 
+        {
+            "action": "Sell", 
+            "balance": 0, 
+            "name": "XETHZUSD", 
+            "price": 171.08, 
+            "time": "2020-04-17 11:05:00"
+        }, 
+        {
+            "action": "Sell", 
+            "balance": 1100, 
+            "name": "XETHZUSD", 
+            "price": 100, 
+            "time": "2020-04-17 17:11:00"
+        }, 
+        {
+            "action": "Sell", 
+            "balance": 1100, 
+            "name": "XETHZUSD", 
+            "price": 100, 
+            "time": "2020-04-17 13:50:00"
+        }, 
+        {
+            "action": "Sell", 
+            "balance": 1100, 
+            "name": "XETHZUSD", 
+            "price": 100, 
+            "time": "2020-04-17 11:05:00"
+        }
+    ]
+}

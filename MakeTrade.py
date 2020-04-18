@@ -3,7 +3,7 @@ import krakenex
 
 class MakeTrade:
     def __init__(self):
-        self.name = 1
+        pass
     # currnecy | buy/sell | market,limit,etc | price, for limit orders | volume, or amount of currency
     def order(self, pair, type, ordertype, price, volume):
         k = krakenex.API()
@@ -14,3 +14,4 @@ class MakeTrade:
                                      'ordertype': ordertype,
                                      'price': price,
                                      'volume': '.5'})
+        return 'done'

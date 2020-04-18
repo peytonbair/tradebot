@@ -1,3 +1,4 @@
+import time
 from MakeTrade import MakeTrade
 from GetData import GetData
 from Strategy import Strategy
@@ -19,9 +20,13 @@ class Bot:
 
 
 def main():
-    pair = 'XXBTZUSD'
+    pair = 'XETHZUSD'
     interval = 1
     tradebot = Bot(pair, interval)
     tradebot.run()
 if __name__ == '__main__':
-    main()
+    starttime=time.time()
+    while True:
+      print "tick"
+      main()
+      time.sleep(60.0 - ((time.time() - starttime) % 60.0))

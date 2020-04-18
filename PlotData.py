@@ -33,12 +33,12 @@ class PlotData:
         sma40 = go.Scatter(
             x = df['time'],
             y = df['sma40'],
-            name = "SMA 100",
+            name = "SMA 40",
             line = dict(color = ('rgba(255, 207, 102, 50)')))
-        hma20 = go.Scatter(
+        sma100 = go.Scatter(
             x = df['time'],
-            y = df['hma20'],
-            name = "HMA 20",
+            y = df['sma100'],
+            name = "SMA 100",
             line = dict(color = ('rgba(255, 207, 102, 100)')))
         rsi = go.Scatter(
             x = df['time'],
@@ -74,7 +74,7 @@ class PlotData:
         fig.append_trace(candle, row=1, col=1)
         fig.append_trace(sma20, row=1, col=1)
         fig.append_trace(sma40, row=1, col=1)
-        fig.append_trace(hma20, row=1, col=1)
+        fig.append_trace(sma100, row=1, col=1)
         #limit errors when a buy/sell signals doesn't exist
         if buy_signals:
             fig.append_trace(buys, row=1, col=1)

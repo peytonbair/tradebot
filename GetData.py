@@ -28,7 +28,7 @@ class GetData:
         dict_len = len(dictionary['result'][pair])
         self.dflength = dict_len
         #creat pandas df
-        col_names = ['time', 'open', 'high', 'low', 'close', 'volume', 'sma20', 'sma40', 'rsi', 'obv','hma20']
+        col_names = ['time', 'open', 'high', 'low', 'close', 'volume', 'sma20', 'sma40', 'rsi', 'obv','hma20','sma100']
         df = pd.DataFrame(columns = col_names)
 
         #creat df cause the import stuff would work
@@ -43,6 +43,7 @@ class GetData:
         df['time'] = [datetime.fromtimestamp(x) for x in df['time']]
         df['sma20'] = sma(df['close'].tolist(), 20)
         df['sma40'] = sma(df['close'].tolist(), 40)
+        df['sma100'] = sma(df['close'].tolist(), 100)
         df['hma20'] = hma(df['close'].tolist(), 20)
         df['rsi'] = rsi(df['close'].tolist(), 10)
         df['obv'] = obv(df['close'].tolist(), df['volume'].tolist())

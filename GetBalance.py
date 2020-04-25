@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #class to get account balance
 import krakenex
 

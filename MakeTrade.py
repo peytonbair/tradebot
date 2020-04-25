@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #class to make orders to kraken
 import krakenex
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import time
+import os
 import datetime
 from MakeTrade import MakeTrade
 from GetData import GetData
@@ -18,16 +19,15 @@ class Bot:
         df = self.df
         strat = Strategy(df, pair)
         strat.run()
+        strat.output()
 
 
 def main():
-    pair = 'XETHZUSD'
+    pair = 'XXBTZUSD'
     interval = 1
     tradebot = Bot(pair, interval)
     tradebot.run()
-if __name__ == '__main__':
-    #initial display items
-    starttime=time.time()
+def graphic():
     print "       _"
     print "      | |"
     print "      | |"
@@ -38,10 +38,16 @@ if __name__ == '__main__':
     print "| |"
     print "| |      TRADEBOT"
     print "|_|"
-    print "____________________________"
+    print "__________________________"
     print ""
+if __name__ == '__main__':
+    #initial display items
+    starttime=time.time()
+    os.system('clear')
+    graphic()
     #continuos run items
     while True:
-      print "Time: " + str(datetime.datetime.now())
+      os.system('clear')
+      graphic()
       main()
       time.sleep(60.0 - ((time.time() - starttime) % 60.0))

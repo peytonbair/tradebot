@@ -4,13 +4,23 @@ import krakenex
 
 class GetBalance:
     def __init__(self):
-        pass
+        self.k = krakenex.API()
+        self.k.load_key('key/kraken.key')
     # currnecy | buy/sell | market,limit,etc | price, for limit orders | volume, or amount of currency
-    def get(self):
-        k = krakenex.API()
-        k.load_key('key/kraken.key')
-
-        print k.query_private('TradesHistory')
-
+    def balance(self, pair):
+        data = self.k.query_private('Balance')
+        balance = data['result']['Z'+pair] # Get the balance of a certain currency
+        return balance
+    def trades(self):
+        data = self.k.query_private('TradesHistory')
+        trades = data['result']
+        return trades
+    def OpenPositions(self):
+        data = self.k.query_private('OpenPositions')
+        positions = data['result']
+        return positions
 bal = GetBalance()
-bal.get()
+
+#print bal.balance('USD')
+#print bal.trades()
+#print bal.OpenPositions()

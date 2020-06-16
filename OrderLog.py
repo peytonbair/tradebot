@@ -1,6 +1,5 @@
 import json
 
-
 class OrderLog:
     def __init__(self):
         pass
@@ -35,6 +34,5 @@ class OrderLog:
                 last_price = data['transaction'][0]['price']
 
             except:
-
                 last_action = 'sell'
                 last_price = 0

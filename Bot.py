@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# When using cronjob @reboot on raspberry pi add a delay to allow for the pi to create an internet connection
 import time
 import os
 import datetime
@@ -18,12 +19,10 @@ class Bot:
         interval = self.interval
         df = self.df
         strat = Strategy(df, pair)
-        strat.run()
-        strat.output()
-
-
+        strat.run() #run test the entire day and live goes live
+        strat.output(True)
 def main():
-    pair = 'XXBTZUSD'
+    pair = 'XETHZUSD'
     interval = 1
     tradebot = Bot(pair, interval)
     tradebot.run()
@@ -45,9 +44,14 @@ if __name__ == '__main__':
     starttime=time.time()
     os.system('clear')
     graphic()
+    #time.sleep(60) #add when running live
     #continuos run items
     while True:
-      os.system('clear')
-      graphic()
-      main()
-      time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+      try: #hopefully eliminate internet issues
+          os.system('clear')
+          graphic()
+          main()
+          time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+      except Exception as e:
+          time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+          print(e)
